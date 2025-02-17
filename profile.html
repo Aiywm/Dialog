@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пайдаланушы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/animate-3.7.0.css">
+    <link rel="stylesheet" href="assets/css/font-awesome-4.7.0.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-4.1.3.min.css">
+    <link rel="stylesheet" href="assets/css/owl-carousel.min.css">
+    <link rel="stylesheet" href="assets/css/jquery.datetimepicker.min.css">
+    <link rel="stylesheet" href="assets/css/linearicons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .profile-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        .form-section h5 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .btn-save {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+        }
+        .btn-save:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">Пайдаланушы профилі</div>
+        
+        <!-- Личные данные -->
+        <div class="form-section">
+            <h5>Жеке мәліметтер</h5>
+            <form id="userProfileForm">
+                <div class="mb-3">
+                    <label for="diabetesType" class="form-label">Диабет түрі:</label>
+                    <select id="diabetesType" class="form-select">
+                        <option value="1">1 тип</option>
+                        <option value="2">2 тип</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="weight" class="form-label">Салмақ (кг):</label>
+                    <input type="number" id="weight" class="form-control" placeholder="Мысалы: 70">
+                </div>
+                <div class="mb-3">
+                    <label for="height" class="form-label">Бойы (см):</label>
+                    <input type="number" id="height" class="form-control" placeholder="Мысалы: 170">
+                </div>
+            </form>
+        </div>
+
+        <!-- Трекер глюкозы -->
+        <div class="form-section">
+            <h5>Глюкоза деңгейі</h5>
+            <input type="number" id="glucoseLevel" class="form-control mb-2" placeholder="Глюкоза деңгейін енгізіңіз (ммоль/л)">
+            <button class="btn btn-primary w-100 mb-2" onclick="saveGlucose()">Сақтау</button>
+            <div id="glucoseHistory"></div>
+        </div>
+
+        <!-- Напоминания -->
+        <div class="form-section">
+            <h5>Еске салғыштар</h5>
+            <input type="datetime-local" id="reminderTime" class="form-control mb-2">
+            <button class="btn btn-primary w-100" onclick="setReminder()">Қосу</button>
+            <div id="reminders"></div>
+        </div>
+
+        <!-- Подписка -->
+        <div class="form-section">
+            <h5>Пакеттер</h5>
+            <div class="form-check">
+                <input type="radio" id="standardPlan" name="plan" class="form-check-input" value="Стандарт">
+                <label for="standardPlan" class="form-check-label">Стандарт пакеті (5,000 KZT/ай)</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="premiumPlan" name="plan" class="form-check-input" value="Премиум">
+                <label for="premiumPlan" class="form-check-label">Премиум пакеті (8,000 KZT/ай)</label>
+            </div>
+        </div>
+
+        <button class="btn-save" onclick="saveProfile()">Профильді сақтау</button>
+    </div>
+
+    <script>
+        const glucoseHistory = [];
+        const reminders = [];
+
+        function saveGlucose() {
+            const glucose = document.getElementById("glucoseLevel").value;
+            if (glucose) {
+                glucoseHistory.push(glucose);
+                updateGlucoseHistory();
+            }
+        }
+
+        function updateGlucoseHistory() {
+            const historyDiv = document.getElementById("glucoseHistory");
+            historyDiv.innerHTML = `<h6>Тарих:</h6><ul>${glucoseHistory.map(g => `<li>${g} ммоль/л</li>`).join("")}</ul>`;
+        }
+
+        function setReminder() {
+            const time = document.getElementById("reminderTime").value;
+            if (time) {
+                reminders.push(time);
+                updateReminders();
+            }
+        }
+
+        function updateReminders() {
+            const reminderDiv = document.getElementById("reminders");
+            reminderDiv.innerHTML = `<h6>Еске салғыштар:</h6><ul>${reminders.map(r => `<li>${new Date(r).toLocaleString()}</li>`).join("")}</ul>`;
+        }
+
+        function saveProfile() {
+            const diabetesType = document.getElementById("diabetesType").value;
+            const weight = document.getElementById("weight").value;
+            const height = document.getElementById("height").value;
+            const plan = document.querySelector('input[name="plan"]:checked')?.value;
+
+            alert(`Профиль сақталды!\nДиабет түрі: ${diabetesType}\nСалмақ: ${weight} кг\nБойы: ${height} см\nПакет: ${plan || "Таңдалмаған"}`);
+        }
+    </script>
+</body>
+</html>

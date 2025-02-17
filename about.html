@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Диабет туралы Чат-бот</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/animate-3.7.0.css">
+    <link rel="stylesheet" href="assets/css/font-awesome-4.7.0.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-4.1.3.min.css">
+    <link rel="stylesheet" href="assets/css/owl-carousel.min.css">
+    <link rel="stylesheet" href="assets/css/jquery.datetimepicker.min.css">
+    <link rel="stylesheet" href="assets/css/linearicons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .chat-container {
+            max-width: 500px;
+            margin: 30px auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .chat-header {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .chat-body {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+        .chat-bubble {
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            max-width: 75%;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background-color: #e9ecef;
+        }
+        .chat-footer {
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #ddd;
+        }
+        .chat-footer input {
+            border-radius: 20px;
+            padding: 10px;
+        }
+        .chat-footer button {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container d-flex flex-column">
+        <div class="chat-header">Диабет туралы Чат-бот</div>
+        <div class="chat-body d-flex flex-column" id="chatBody">
+            <div class="chat-bubble bot-message">Сәлем! Диабет туралы сұрақтарыңызға жауап беруге дайынмын.</div>
+        </div>
+        <div class="chat-footer d-flex align-items-center">
+            <input type="text" class="form-control me-2" id="userInput" placeholder="Сұрағыңызды жазыңыз...">
+            <button class="btn btn-success" onclick="handleUserMessage()">Жіберу</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS және Popper.js қосу -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function handleUserMessage() {
+            const userInput = document.getElementById("userInput").value.trim();
+            if (!userInput) return;
+
+            // Пайдаланушы хабарламасын көрсету
+            displayMessage(userInput, "user");
+
+            // Бот жауабын алу
+            const botResponse = getBotResponse(userInput);
+
+            // Бот жауабын көрсету
+            setTimeout(() => {
+                displayMessage(botResponse, "bot");
+            }, 500);
+
+            // Енгізу өрісін тазалау
+            document.getElementById("userInput").value = "";
+        }
+
+        function displayMessage(message, sender) {
+            const chatBody = document.getElementById("chatBody");
+            const bubble = document.createElement("div");
+            bubble.classList.add("chat-bubble");
+            bubble.classList.add(sender === "user" ? "user-message" : "bot-message");
+            bubble.textContent = message;
+            chatBody.appendChild(bubble);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function getBotResponse(userInput) {
+            const lowerCaseInput = userInput.toLowerCase();
+
+            // Негізгі сұрақтарға жауаптар
+            if (lowerCaseInput.includes("диабет деген не")) {
+                return "Диабет – бұл организмде инсулин жеткіліксіз бөлінген немесе оны тиімді қолдана алмайтын созылмалы ауру.";
+            } else if (lowerCaseInput.includes("белгілері")) {
+                return "Диабеттің белгілері: жиі зәр шығару, қатты шөлдеу, үнемі аштық сезімі, шаршағыштық және көрудің бұлыңғыр болуы.";
+            } else if (lowerCaseInput.includes("түрлері")) {
+                return "Диабеттің 2 негізгі түрі бар: 1 тип (организм инсулин өндірмейді) және 2 тип (организм инсулинді тиімді қолдана алмайды).";
+            } else if (lowerCaseInput.includes("алдын алу")) {
+                return "2 типті диабеттің алдын алу үшін: дұрыс тамақтану, тұрақты түрде дене жаттығуларын жасау және қантты аз тұтыну маңызды.";
+            } else if (lowerCaseInput.includes("емдеу")) {
+                return "Диабетті емдеу инсулин қолдану, дәрі-дәрмектер, дұрыс тамақтану және дене белсенділігін қамтиды. Дәрігермен кеңесу ұсынылады.";
+            } else {
+                return "Кешіріңіз, бұл сұраққа жауап бере алмаймын. Басқа сұрақ қойып көріңіз!";
+            }
+        }
+    </script>
+</body>
+</html>
